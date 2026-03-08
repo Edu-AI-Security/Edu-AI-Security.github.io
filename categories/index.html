@@ -360,52 +360,65 @@
 
 <script>
 (function(){
-    const modal = document.getElementById('requestModal');
-    const closeBtn = document.getElementById('modalClose');
-    const form = document.getElementById('requestForm');
-    let currentModule = null;
+  const modal = document.getElementById('requestModal');
+  const closeBtn = document.getElementById('modalClose');
+  const form = document.getElementById('requestForm');
+  let currentModule = null;
 
-    function showModal(){
-        modal.style.display = 'block';
-    }
-    function hideModal(){
-        modal.style.display = 'none';
-    }
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxnkr4v_UWb6XnQtvYnxuYdPA_N2I-bN3wV3VBqCZcgWsVwppEHFt5kkBSnU4X0yQEpaQ/exec';
 
-    // attach click handlers to cards
-    document.querySelectorAll('.module-card').forEach(card=>{
-        const num = card.getAttribute('data-mod');
-        card.addEventListener('click',function(){
-            const key = `module_request_submitted_${num}`;
-            if(localStorage.getItem(key)) return; // already submitted for this module
-            currentModule = num;
-            showModal();
-        });
+  function showModal(){ modal.style.display = 'block'; }
+  function hideModal(){ modal.style.display = 'none'; }
+
+  document.querySelectorAll('.module-card').forEach(card=>{
+    const num = card.getAttribute('data-mod');
+    card.addEventListener('click', function(e){
+      if (card.tagName.toLowerCase() === 'a') e.preventDefault();
+
+      const key = `module_request_submitted_${num}`;
+      if(localStorage.getItem(key)) return; // 已提交就不弹
+      currentModule = num;
+      showModal();
     });
+  });
 
-    closeBtn.addEventListener('click', hideModal);
+  closeBtn.addEventListener('click', hideModal);
 
-    form.addEventListener('submit', function(e){
-        e.preventDefault();
-        const name = document.getElementById('requesterName').value.trim();
-        const reason = document.getElementById('requestReason').value.trim();
-        // send to server with module number
-        fetch('/submit-request', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({name, reason, module: currentModule})
-        }).then(res=>{
-            // ignore response
-        }).catch(err=>{
-            console.error('request submission failed', err);
-        }).finally(()=>{
-            if(currentModule) {
-                const key = `module_request_submitted_${currentModule}`;
-                localStorage.setItem(key,'true');
-            }
-            hideModal();
-        });
-    });
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const name = document.getElementById('requesterName').value.trim();
+    const reason = document.getElementById('requestReason').value.trim();
+    if(!name || !reason || !currentModule) return;
+
+    const entry = {
+      module: currentModule,
+      name,
+      reason,
+      ts: new Date().toISOString(),
+      pageUrl: location.href,
+      userAgent: navigator.userAgent
+    };
+
+    // 本地标记：避免重复弹窗
+    localStorage.setItem(`module_request_submitted_${currentModule}`, 'true');
+
+    // 发送到 Apps Script（静态站用 no-cors 最省事）
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry)
+      });
+    } catch (err) {
+      console.error('send failed', err);
+      // 如果希望失败就允许再填一次：
+      // localStorage.removeItem(`module_request_submitted_${currentModule}`);
+    }
+
+    hideModal();
+    alert('已提交，我们会尽快处理。');
+  });
 })();
 </script>
 
