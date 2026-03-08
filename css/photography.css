@@ -145,6 +145,7 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
 }
 .module-cards .card:hover {
     transform: translateY(-5px);
@@ -158,4 +159,21 @@
 }
 .module-cards .card-text {
     font-size: 0.9rem;
+}
+
+/* modal overlay */
+#requestModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#requestModal .modal-dialog {
+    max-width: 500px;
 }

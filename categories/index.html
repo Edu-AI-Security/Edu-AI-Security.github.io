@@ -231,7 +231,7 @@
             
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="1">
                     <div class="card-body">
                         <h4>Module 1</h4>
                         <h5><strong>Gradient Descent-Based Adversarial Attacks in Computer Vision</strong></h5>
@@ -241,7 +241,7 @@
             </div>
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="2">
                     <div class="card-body">
                         <h4>Module 2</h4>
                         <h5><strong>Attacking Voice Assistant Systems by Speech Perturbations</strong></h5>
@@ -251,7 +251,7 @@
             </div>
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="3">
                     <div class="card-body">
                         <h4>Module 3</h4>
                         <h5><strong>Leveraging Image Patches to Hijack Object Recognition</strong></h5>
@@ -261,7 +261,7 @@
             </div>
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="4">
                     <div class="card-body">
                         <h4>Module 4</h4>
                         <h5><strong>Security Protection of Voice Assistant Systems under Audio Adversarial Attacks</strong></h5>
@@ -271,7 +271,7 @@
             </div>
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="5">
                     <div class="card-body">
                         <h4>Module 5</h4>
                         <h5><strong>Launching Practical Backdoor Attacks against Object Recognition in Real World</strong></h5>
@@ -281,7 +281,7 @@
             </div>
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="6">
                     <div class="card-body">
                         <h4>Module 6</h4>
                         <h5><strong>Hiding Backdoor Triggers in Sounds for Spoofing Voice Recognition</strong></h5>
@@ -291,7 +291,7 @@
             </div>
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="7">
                     <div class="card-body">
                         <h4>Module 7</h4>
                         <h5><strong>Spoofing Voice Assistant Systems by Hiding Backdoors in Environmental Sounds</strong></h5>
@@ -301,7 +301,7 @@
             </div>
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="8">
                     <div class="card-body">
                         <h4>Module 8</h4>
                         <h5><strong>Inserting Backdoors to Image Recognition Models Using Poisoned Images</strong></h5>
@@ -311,7 +311,7 @@
             </div>
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="9">
                     <div class="card-body">
                         <h4>Module 9</h4>
                         <h5><strong>Launching Physical Adversarial Attacks against Speech Recognition</strong></h5>
@@ -321,7 +321,7 @@
             </div>
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="10">
                     <div class="card-body">
                         <h4>Module 10</h4>
                         <h5><strong>Securing Object Recognition under Adversarial Attacks</strong></h5>
@@ -331,7 +331,7 @@
             </div>
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="11">
                     <div class="card-body">
                         <h4>Module 11</h4>
                         <h5><strong>Mitigating Backdoor Threats in Vision-based Sensing Systems</strong></h5>
@@ -341,7 +341,7 @@
             </div>
             
             <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card">
+                <div class="card module-card" data-mod="12">
                     <div class="card-body">
                         <h4>Module 12</h4>
                         <h5><strong>Securing Voice Assistant Systems by Removing Hidden Backdoors</strong></h5>
@@ -354,6 +354,60 @@
     </div>
     </div>
 </div>
+
+<!-- request modal -->
+<div id="requestModal" class="modal" tabindex="-1" role="dialog" style="display:none;"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Module Access Request</h5><button type="button" class="close" id="modalClose">&times;</button></div><div class="modal-body"><form id="requestForm"><div class="form-group"><label for="requesterName">Name</label><input type="text" id="requesterName" class="form-control" required></div><div class="form-group"><label for="requestReason">Reason</label><textarea id="requestReason" class="form-control" rows="3" required></textarea></div><button type="submit" class="btn btn-primary">Submit</button></form></div></div></div></div>
+
+<script>
+(function(){
+    const modal = document.getElementById('requestModal');
+    const closeBtn = document.getElementById('modalClose');
+    const form = document.getElementById('requestForm');
+    let currentModule = null;
+
+    function showModal(){
+        modal.style.display = 'block';
+    }
+    function hideModal(){
+        modal.style.display = 'none';
+    }
+
+    // attach click handlers to cards
+    document.querySelectorAll('.module-card').forEach(card=>{
+        const num = card.getAttribute('data-mod');
+        card.addEventListener('click',function(){
+            const key = `module_request_submitted_${num}`;
+            if(localStorage.getItem(key)) return; // already submitted for this module
+            currentModule = num;
+            showModal();
+        });
+    });
+
+    closeBtn.addEventListener('click', hideModal);
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const name = document.getElementById('requesterName').value.trim();
+        const reason = document.getElementById('requestReason').value.trim();
+        // send to server with module number
+        fetch('/submit-request', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({name, reason, module: currentModule})
+        }).then(res=>{
+            // ignore response
+        }).catch(err=>{
+            console.error('request submission failed', err);
+        }).finally(()=>{
+            if(currentModule) {
+                const key = `module_request_submitted_${currentModule}`;
+                localStorage.setItem(key,'true');
+            }
+            hideModal();
+        });
+    });
+})();
+</script>
 
     <!-- Footer -->
     <!-- Footer -->
