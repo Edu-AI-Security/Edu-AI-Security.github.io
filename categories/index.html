@@ -136,7 +136,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Education on Securing AI</a>
+            <a class="navbar-brand" href="/">Education on Securing AI System under Adversarial Machine Learning Attacks</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -159,7 +159,7 @@
 
                         
                         <li>
-                            <a href="/archive/">Workshop &amp; Tutorial</a>
+                            <a href="/archive/">Workshops &amp; Tutorials</a>
                         </li>
                         
                     
@@ -182,244 +182,355 @@
     </div>
     <!-- /.container -->
 </nav>
-<script>
-    // Drop Bootstarp low-performance Navbar
-    // Use customize navbar with high-quality material design animation
-    // in high-perf jank-free CSS3 implementation
-    var $body   = document.body;
-    var $toggle = document.querySelector('.navbar-toggle');
-    var $navbar = document.querySelector('#huxblog_navbar');
-    var $collapse = document.querySelector('.navbar-collapse');
 
-    $toggle.addEventListener('click', handleMagic)
+<style>
+
+/* 第一级：缩小字体 */
+.navbar-brand.is-shrunk {
+    font-size: 14px; 
+}
+
+/* 移动端/强行替换后的样式 */
+.navbar-brand.is-mobile {
+    font-size: 14px !important; /* 移动端建议稍大一点点提高可读性 */
+    white-space: normal;
+    display: flex;
+    align-items: center;
+}
+
+</style>
+<script>
+    var $toggle   = document.querySelector('.navbar-toggle');
+    var $navbar   = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+    var $brand    = document.querySelector('.navbar-brand');
+    var $navItems = document.querySelector('.navbar-nav');
+
+    // 配置文字
+    var originalTitle = "Education on Securing AI System under Adversarial Machine Learning Attacks"; 
+    var backupTitle   = "Education on Securing AI System";
+
+    function handleNavbarLogic() {
+        var windowWidth = window.innerWidth;
+
+        // --- 逻辑 A: 移动端模式 (Width <= 768px) ---
+        if (windowWidth <= 768) {
+            $brand.innerHTML = backupTitle;
+            $brand.classList.add('is-mobile');
+            $brand.classList.remove('is-shrunk');
+            return; // 移动端不走碰撞检测
+        }
+
+        // --- 逻辑 B: 桌面端模式 (碰撞检测) ---
+        // 1. 先重置回原始状态进行测试
+        $brand.classList.remove('is-mobile', 'is-shrunk');
+        $brand.innerHTML = originalTitle;
+        $brand.style.whiteSpace = 'nowrap';
+
+        function isOverlapping() {
+            var brandRect = $brand.getBoundingClientRect();
+            var navRect = $navItems.getBoundingClientRect();
+            // 只要右边界超过了导航栏左边界（预留15px感应区），就视为碰撞
+            return brandRect.right > (navRect.left - 15);
+        }
+
+        // 2. 检测第一级：是否碰撞？
+        if (isOverlapping()) {
+            $brand.classList.add('is-shrunk'); // 尝试缩小字体
+            
+            // 3. 检测第二级：缩小后是否还在碰撞？
+            if (isOverlapping()) {
+                $brand.innerHTML = backupTitle; // 替换为短标题
+                $brand.style.whiteSpace = 'normal'; // 允许换行
+                $brand.classList.add('is-mobile'); // 应用换行样式
+            }
+        }
+    }
+
+    // 绑定事件
+    window.addEventListener('resize', handleNavbarLogic);
+    window.addEventListener('DOMContentLoaded', handleNavbarLogic);
+
+    // 原有的 Magic 展开折叠逻辑
+    $toggle.addEventListener('click', handleMagic);
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        // CLOSE
             $navbar.className = " ";
-            // wait until animation end.
             setTimeout(function(){
-                // prevent frequently toggle
                 if($navbar.className.indexOf('in') < 0) {
-                    $collapse.style.height = "0px"
+                    $collapse.style.height = "0px";
                 }
-            },400)
-        }else{
-        // OPEN
-            $collapse.style.height = "auto"
+            }, 400);
+        } else {
+            $collapse.style.height = "auto";
             $navbar.className += " in";
         }
     }
 </script>
 
-
     <!-- Main Content -->
     
-
 <div class="container">
-    <div class="row">
-    <h2 class="section-heading">Module Design Overview</h2>
-
-    <div class="images" style="text-align:center;margin-top: 30px;">
-            <img style="max-width: 95%" src="../img/intro.png" data-aos="zoom-in" class="aos-init aos-animate">
-        <br><br>
-    </div>
-        <p style="margin-top: 20px;">
-            The module designs a comprehensive educational curriculum on adversarial machine learning security for AI systems in image and audio domains. It includes 15 modules and 50+ labs/projects covering digital and physical attacks such as adversarial examples and backdoor attacks targeting image classification, object detection, speech recognition, and voice assistants. Students learn both attack techniques and defense strategies, including adversarial detection, robust training, and secure system design. The program integrates hands-on labs, programming assignments, and training projects, and disseminates materials through initiatives like NSF SFS, GenCyber, and online platforms to train future engineers to build trustworthy and secure AI systems.
-        </p>
-    <div class="module-cards" style="margin-top: 40px;">
+    <div id="module-list-view">
         <div class="row">
+            <h2 class="section-heading">Module Design Overview</h2>
+
+            <div class="images" style="text-align:center;margin-top: 30px;">
+                <img style="max-width: 95%" src="../img/intro.png" data-aos="zoom-in" class="aos-init aos-animate">
+                <br><br>
+            </div>
+            <p style="margin-top: 20px;">
+                The module designs a comprehensive educational curriculum on adversarial machine learning security for AI systems in image and audio domains. It includes 15 modules and 50+ labs/projects covering digital and physical attacks such as adversarial examples and backdoor attacks targeting image classification, object detection, speech recognition, and voice assistants. Students learn both attack techniques and defense strategies, including adversarial detection, robust training, and secure system design. The program integrates hands-on labs, programming assignments, and training projects, and disseminates materials through initiatives like NSF SFS, GenCyber, and online platforms to train future engineers to build trustworthy and secure AI systems.
+            </p>
             
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="1">
-                    <div class="card-body">
-                        <h4>Module 1</h4>
-                        <h5><strong>Gradient Descent-Based Adversarial Attacks in Computer Vision</strong></h5>
-                        <!-- <p class="card-text">状态: ✔ 已完成</p> -->
+            <div class="module-cards" style="margin-top: 40px;">
+                <div class="row">
+                    
+                    
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('1', 'Gradient Descent-Based Adversarial Attacks in Computer Vision', 'This module explores the fundamentals of gradient-based attacks, focusing on how small, calculated perturbations can deceive state-of-the-art vision models.')">
+                            <div class="card-body">
+                                <h4>Module 1</h4>
+                                <h5><strong>Gradient Descent-Based Adversarial Attacks in Computer Vision</strong></h5>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('2', 'Attacking Voice Assistant Systems by Speech Perturbations', 'Learn how audio signals can be manipulated to inject hidden commands into voice assistants without being noticed by human ears.')">
+                            <div class="card-body">
+                                <h4>Module 2</h4>
+                                <h5><strong>Attacking Voice Assistant Systems by Speech Perturbations</strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('3', 'Leveraging Image Patches to Hijack Object Recognition', 'A study on physical-world attacks using printed patches to misclassify objects in real-time camera feeds.')">
+                            <div class="card-body">
+                                <h4>Module 3</h4>
+                                <h5><strong>Leveraging Image Patches to Hijack Object Recognition</strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('4', 'Security Protection of Voice Assistant Systems under Audio Adversarial Attacks', 'Focuses on defensive measures, such as audio preprocessing and noise reduction, to shield voice-activated devices.')">
+                            <div class="card-body">
+                                <h4>Module 4</h4>
+                                <h5><strong>Security Protection of Voice Assistant Systems under Audio Adversarial Attacks</strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('5', 'Launching Practical Backdoor Attacks against Object Recognition in Real World', 'Explores the vulnerability of models trained on outsourced or poisoned datasets, leading to triggered misbehavior.')">
+                            <div class="card-body">
+                                <h4>Module 5</h4>
+                                <h5><strong>Launching Practical Backdoor Attacks against Object Recognition in Real World</strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('6', 'Hiding Backdoor Triggers in Sounds for Spoofing Voice Recognition', 'Investigates techniques for embedding malicious triggers within ambient sounds to bypass voice biometric systems.')">
+                            <div class="card-body">
+                                <h4>Module 6</h4>
+                                <h5><strong>Hiding Backdoor Triggers in Sounds for Spoofing Voice Recognition</strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('7', 'Spoofing Voice Assistant Systems by Hiding Backdoors in Environmental Sounds', 'An advanced look at how environmental noises (like rain or traffic) can be used as subtle triggers for backdoor attacks.')">
+                            <div class="card-body">
+                                <h4>Module 7</h4>
+                                <h5><strong>Spoofing Voice Assistant Systems by Hiding Backdoors in Environmental Sounds</strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('8', 'Inserting Backdoors to Image Recognition Models Using Poisoned Images', 'Detailed analysis of data poisoning strategies during the training phase of deep neural networks.')">
+                            <div class="card-body">
+                                <h4>Module 8</h4>
+                                <h5><strong>Inserting Backdoors to Image Recognition Models Using Poisoned Images</strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('9', 'Launching Physical Adversarial Attacks against Speech Recognition', 'Moving beyond digital files to test how replayed or broadcasted audio attacks perform in physical spaces.')">
+                            <div class="card-body">
+                                <h4>Module 9</h4>
+                                <h5><strong>Launching Physical Adversarial Attacks against Speech Recognition</strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('10', 'Securing Object Recognition under Adversarial Attacks', 'Comprehensive defense strategies including adversarial training and input transformation for vision systems.')">
+                            <div class="card-body">
+                                <h4>Module 10</h4>
+                                <h5><strong>Securing Object Recognition under Adversarial Attacks</strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('11', 'Mitigating Backdoor Threats in Vision-based Sensing Systems', 'Techniques for detecting and removing backdoors from pre-trained vision models to ensure sensing integrity.')">
+                            <div class="card-body">
+                                <h4>Module 11</h4>
+                                <h5><strong>Mitigating Backdoor Threats in Vision-based Sensing Systems</strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" style="margin-bottom:20px;">
+                        <div class="card module-card" style="cursor:pointer; height:100%; transition: 0.3s;" onclick="openModuleDetail('12', 'Securing Voice Assistant Systems by Removing Hidden Backdoors', 'Methods for sanitizing audio models and verifying their robustness against hidden trigger-based threats.')">
+                            <div class="card-body">
+                                <h4>Module 12</h4>
+                                <h5><strong>Securing Voice Assistant Systems by Removing Hidden Backdoors</strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="2">
-                    <div class="card-body">
-                        <h4>Module 2</h4>
-                        <h5><strong>Attacking Voice Assistant Systems by Speech Perturbations</strong></h5>
-                        <!-- <p class="card-text">状态: ✔ 已完成</p> -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="3">
-                    <div class="card-body">
-                        <h4>Module 3</h4>
-                        <h5><strong>Leveraging Image Patches to Hijack Object Recognition</strong></h5>
-                        <!-- <p class="card-text">状态: ✔ 已完成</p> -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="4">
-                    <div class="card-body">
-                        <h4>Module 4</h4>
-                        <h5><strong>Security Protection of Voice Assistant Systems under Audio Adversarial Attacks</strong></h5>
-                        <!-- <p class="card-text">状态: ✔ 已完成</p> -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="5">
-                    <div class="card-body">
-                        <h4>Module 5</h4>
-                        <h5><strong>Launching Practical Backdoor Attacks against Object Recognition in Real World</strong></h5>
-                        <!-- <p class="card-text">状态: ✔ 已完成</p> -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="6">
-                    <div class="card-body">
-                        <h4>Module 6</h4>
-                        <h5><strong>Hiding Backdoor Triggers in Sounds for Spoofing Voice Recognition</strong></h5>
-                        <!-- <p class="card-text">状态: 开发中</p> -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="7">
-                    <div class="card-body">
-                        <h4>Module 7</h4>
-                        <h5><strong>Spoofing Voice Assistant Systems by Hiding Backdoors in Environmental Sounds</strong></h5>
-                        <!-- <p class="card-text">状态: 开发中</p> -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="8">
-                    <div class="card-body">
-                        <h4>Module 8</h4>
-                        <h5><strong>Inserting Backdoors to Image Recognition Models Using Poisoned Images</strong></h5>
-                        <!-- <p class="card-text">状态: 开发中</p> -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="9">
-                    <div class="card-body">
-                        <h4>Module 9</h4>
-                        <h5><strong>Launching Physical Adversarial Attacks against Speech Recognition</strong></h5>
-                        <!-- <p class="card-text">状态: 开发中</p> -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="10">
-                    <div class="card-body">
-                        <h4>Module 10</h4>
-                        <h5><strong>Securing Object Recognition under Adversarial Attacks</strong></h5>
-                        <!-- <p class="card-text">状态: 开发中</p> -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="11">
-                    <div class="card-body">
-                        <h4>Module 11</h4>
-                        <h5><strong>Mitigating Backdoor Threats in Vision-based Sensing Systems</strong></h5>
-                        <!-- <p class="card-text">状态: 开发中</p> -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4" style="margin-bottom:20px;">
-                <div class="card module-card" data-mod="12">
-                    <div class="card-body">
-                        <h4>Module 12</h4>
-                        <h5><strong>Securing Voice Assistant Systems by Removing Hidden Backdoors</strong></h5>
-                        <!-- <p class="card-text">状态: 开发中</p> -->
-                    </div>
-                </div>
-            </div>
-            
         </div>
     </div>
+
+    <div id="module-detail-view" style="display:none; margin-top: 30px; padding-bottom: 50px;">
+    <button class="btn btn-outline-secondary mb-4" onclick="closeModuleDetail()">Back to Overview</button>
+    
+    <div class="card shadow-sm">
+        <div class="card-body" style="padding: 40px;">
+            <h2 id="display-module-title" class="text-primary"></h2>
+            <hr>
+            <div class="mt-4">
+                <h4>Module Introduction</h4>
+                <p id="display-module-intro" style="font-size: 1.1em; line-height: 1.6; color: #444;"></p>
+            </div>
+
+            <div class="mt-5 p-4" style="background: #f8f9fa; border-radius: 8px;">
+                <h4 style="margin-top: 20px;">Request Download Access</h4>
+                <p class="text-muted">Please provide your details to activate this module and download the materials.</p>
+                
+                <form id="downloadForm" class="row">
+                    <div class="form-group col-md-6 mb-3">
+                        <label>Full Name</label>
+                        <input type="text" id="reqName" class="form-control" placeholder="Enter your name" required 
+                               oninvalid="this.setCustomValidity('Please fill out this field.')" 
+                               oninput="this.setCustomValidity('')">
+                    </div>
+                    <div class="form-group col-md-6 mb-3">
+                        <label>Email Address</label>
+                        <input type="email" id="reqEmail" class="form-control" placeholder="Enter your email" required
+                               oninvalid="this.setCustomValidity('Please enter a valid email address.')" 
+                               oninput="this.setCustomValidity('')">
+                    </div>
+                    <div class="form-group col-md-6 mb-3">
+                        <label>Affiliation</label>
+                        <input type="text" id="reqAffiliation" class="form-control" placeholder="University or Organization" required
+                               oninvalid="this.setCustomValidity('Please fill out this field.')" 
+                               oninput="this.setCustomValidity('')">
+                    </div>
+                    <div class="form-group col-md-6 mb-3">
+                        <label>Occupancy</label>
+                        <select id="reqOccupancy" class="form-control" required
+                                oninvalid="this.setCustomValidity('Please select an item in the list.')" 
+                                oninput="this.setCustomValidity('')" style="margin-top: 0px;">
+                            <option value="" disabled selected>Select your role...</option>
+                            <option value="student">Student</option>
+                            <option value="professor">Professor</option>
+                            <option value="researcher">Researcher</option>
+                            <option value="others">Others</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group col-12 mt-3 d-flex justify-content-end">
+                        &nbsp;&nbsp;
+                        <button type="submit" class="btn btn-success">DOWNLOAD</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- request modal -->
-<div id="requestModal" class="modal" tabindex="-1" role="dialog" style="display:none;"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Module Access Request</h5><button type="button" class="close" id="modalClose">&times;</button></div><div class="modal-body"><form id="requestForm"><div class="form-group"><label for="requesterName">Name</label><input type="text" id="requesterName" class="form-control" required></div><div class="form-group"><label for="requestReason">Reason</label><textarea id="requestReason" class="form-control" rows="3" required></textarea></div><button type="submit" class="btn btn-primary">Submit</button></form></div></div></div></div>
-
 <script>
 (function(){
-  const modal = document.getElementById('requestModal');
-  const closeBtn = document.getElementById('modalClose');
-  const form = document.getElementById('requestForm');
-  let currentModule = null;
+    const listView = document.getElementById('module-list-view');
+    const detailView = document.getElementById('module-detail-view');
+    const form = document.getElementById('downloadForm');
+    let activeModuleId = null;
 
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxnkr4v_UWb6XnQtvYnxuYdPA_N2I-bN3wV3VBqCZcgWsVwppEHFt5kkBSnU4X0yQEpaQ/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQ1VQFWR_jmZLP0wKDOp5t_pa6pDck_5_x8kmfUZhWrkD2LIah8K4JekZoV2ibHsAd0A/exec';
 
-  function showModal(){ modal.style.display = 'block'; }
-  function hideModal(){ modal.style.display = 'none'; }
-
-  document.querySelectorAll('.module-card').forEach(card=>{
-    const num = card.getAttribute('data-mod');
-    card.addEventListener('click', function(e){
-      if (card.tagName.toLowerCase() === 'a') e.preventDefault();
-
-      const key = `module_request_submitted_${num}`;
-      if(localStorage.getItem(key)) return; // 已提交就不弹
-      currentModule = num;
-      showModal();
-    });
-  });
-
-  closeBtn.addEventListener('click', hideModal);
-
-  form.addEventListener('submit', async function(e){
-    e.preventDefault();
-    const name = document.getElementById('requesterName').value.trim();
-    const reason = document.getElementById('requestReason').value.trim();
-    if(!name || !reason || !currentModule) return;
-
-    const entry = {
-      module: currentModule,
-      name,
-      reason,
-      ts: new Date().toISOString(),
-      pageUrl: location.href,
-      userAgent: navigator.userAgent
+    window.openModuleDetail = function(num, title, intro) {
+        activeModuleId = num;
+        listView.style.display = 'none';
+        detailView.style.display = 'block';
+        
+        document.getElementById('display-module-title').innerText = "Module " + num + ": " + title;
+        document.getElementById('display-module-intro').innerText = intro;
+        window.scrollTo(0, 0);
     };
 
-    // 本地标记：避免重复弹窗
-    localStorage.setItem(`module_request_submitted_${currentModule}`, 'true');
+    // 返回列表页
+    window.closeModuleDetail = function() {
+        listView.style.display = 'block';
+        detailView.style.display = 'none';
+        form.reset();
+    };
 
-    // 发送到 Apps Script（静态站用 no-cors 最省事）
-    try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(entry)
-      });
-    } catch (err) {
-      console.error('send failed', err);
-      // 如果希望失败就允许再填一次：
-      // localStorage.removeItem(`module_request_submitted_${currentModule}`);
-    }
+    // 处理下载提交
+    form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        
+        const formData = {
+            module: activeModuleId,
+            name: document.getElementById('reqName').value.trim(),
+            email: document.getElementById('reqEmail').value.trim(),
+            affiliation: document.getElementById('reqAffiliation').value.trim(),
+            occupancy: document.getElementById('reqOccupancy').value,
+            timestamp: new Date().toISOString()
+        };
 
-    hideModal();
-  });
+        // 模拟激活状态
+        localStorage.setItem(`activated_module_${activeModuleId}`, 'true');
+
+        try {
+            // 使用 no-cors 模式发送数据到 Google Apps Script
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            
+            alert('Your request has been processed. Download will begin shortly!');
+            closeModuleDetail();
+        } catch (err) {
+            console.error('Submission error:', err);
+            alert('There was an error processing your request. Please try again.');
+        }
+    });
 })();
 </script>
+
+<style>
+    .module-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-color: #007bff;
+    }
+    .section-heading {
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+</style>
 
     <!-- Footer -->
     <!-- Footer -->
@@ -538,6 +649,21 @@
     
         <script src="/js/ribbonDynamic.js"></script>
     
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 
 </html>

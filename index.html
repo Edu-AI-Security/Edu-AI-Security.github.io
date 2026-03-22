@@ -136,7 +136,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Education on Securing AI</a>
+            <a class="navbar-brand" href="/">Education on Securing AI System under Adversarial Machine Learning Attacks</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -159,7 +159,7 @@
 
                         
                         <li>
-                            <a href="/archive/">Workshop &amp; Tutorial</a>
+                            <a href="/archive/">Workshops &amp; Tutorials</a>
                         </li>
                         
                     
@@ -182,35 +182,91 @@
     </div>
     <!-- /.container -->
 </nav>
-<script>
-    // Drop Bootstarp low-performance Navbar
-    // Use customize navbar with high-quality material design animation
-    // in high-perf jank-free CSS3 implementation
-    var $body   = document.body;
-    var $toggle = document.querySelector('.navbar-toggle');
-    var $navbar = document.querySelector('#huxblog_navbar');
-    var $collapse = document.querySelector('.navbar-collapse');
 
-    $toggle.addEventListener('click', handleMagic)
+<style>
+
+/* 第一级：缩小字体 */
+.navbar-brand.is-shrunk {
+    font-size: 14px; 
+}
+
+/* 移动端/强行替换后的样式 */
+.navbar-brand.is-mobile {
+    font-size: 14px !important; /* 移动端建议稍大一点点提高可读性 */
+    white-space: normal;
+    display: flex;
+    align-items: center;
+}
+
+</style>
+<script>
+    var $toggle   = document.querySelector('.navbar-toggle');
+    var $navbar   = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+    var $brand    = document.querySelector('.navbar-brand');
+    var $navItems = document.querySelector('.navbar-nav');
+
+    // 配置文字
+    var originalTitle = "Education on Securing AI System under Adversarial Machine Learning Attacks"; 
+    var backupTitle   = "Education on Securing AI System";
+
+    function handleNavbarLogic() {
+        var windowWidth = window.innerWidth;
+
+        // --- 逻辑 A: 移动端模式 (Width <= 768px) ---
+        if (windowWidth <= 768) {
+            $brand.innerHTML = backupTitle;
+            $brand.classList.add('is-mobile');
+            $brand.classList.remove('is-shrunk');
+            return; // 移动端不走碰撞检测
+        }
+
+        // --- 逻辑 B: 桌面端模式 (碰撞检测) ---
+        // 1. 先重置回原始状态进行测试
+        $brand.classList.remove('is-mobile', 'is-shrunk');
+        $brand.innerHTML = originalTitle;
+        $brand.style.whiteSpace = 'nowrap';
+
+        function isOverlapping() {
+            var brandRect = $brand.getBoundingClientRect();
+            var navRect = $navItems.getBoundingClientRect();
+            // 只要右边界超过了导航栏左边界（预留15px感应区），就视为碰撞
+            return brandRect.right > (navRect.left - 15);
+        }
+
+        // 2. 检测第一级：是否碰撞？
+        if (isOverlapping()) {
+            $brand.classList.add('is-shrunk'); // 尝试缩小字体
+            
+            // 3. 检测第二级：缩小后是否还在碰撞？
+            if (isOverlapping()) {
+                $brand.innerHTML = backupTitle; // 替换为短标题
+                $brand.style.whiteSpace = 'normal'; // 允许换行
+                $brand.classList.add('is-mobile'); // 应用换行样式
+            }
+        }
+    }
+
+    // 绑定事件
+    window.addEventListener('resize', handleNavbarLogic);
+    window.addEventListener('DOMContentLoaded', handleNavbarLogic);
+
+    // 原有的 Magic 展开折叠逻辑
+    $toggle.addEventListener('click', handleMagic);
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        // CLOSE
             $navbar.className = " ";
-            // wait until animation end.
             setTimeout(function(){
-                // prevent frequently toggle
                 if($navbar.className.indexOf('in') < 0) {
-                    $collapse.style.height = "0px"
+                    $collapse.style.height = "0px";
                 }
-            },400)
-        }else{
-        // OPEN
-            $collapse.style.height = "auto"
+            }, 400);
+        } else {
+            $collapse.style.height = "auto";
             $navbar.className += " in";
         }
     }
 </script>
-
 
     <!-- Main Content -->
     
@@ -239,19 +295,22 @@
     <section class="modules">
         <h2 class="section-heading text-center">News</h2>
         <ul class="module-list">
-            <li><strong>Module 1:</strong> Gradient Descent-Based Adversarial Attacks in Computer Vision</li>
-            <li><strong>Module 2:</strong> Attacking Voice Assistant Systems by Speech Perturbations</li>
-            <li><strong>Module 3:</strong> Leveraging Image Patches to Hijack Object Recognition</li>
-            <li><strong>Module 4:</strong> Security Protection of Voice Assistant Systems under Audio Adversarial Attacks</li>
-            <li><strong>Module 5:</strong> Launching Practical Backdoor Attacks against Object Recognition in Real World</li>
-            <li><strong>Module 6:</strong> Hiding Backdoor Triggers in Sounds for Spoofing Voice Recognition</li>
-            <li><strong>Module 7:</strong> Spoofing Voice Assistant Systems by Hiding Backdoors in Environmental Sounds</li>
-            <li><strong>Module 8:</strong> Inserting Backdoors to Image Recognition Models Using Poisoned Images</li>
-            <li><strong>Module 9:</strong> Launching Physical Adversarial Attacks against Speech Recognition</li>
-            <li><strong>Module 10:</strong> Securing Object Recognition under Adversarial Attacks</li>
-            <li><strong>Module 11:</strong> Mitigating Backdoor Threats in Vision-based Sensing Systems</li>
-            <li><strong>Module 12:</strong> Securing Voice Assistant Systems by Removing Hidden Backdoors</li>
-        </ul>
+            <li><strong>February 2026:</strong> Education on Securing AI-Enabled Image and Audio Systems under Adversarial Machine Learning Attacks Workshop has been successfully held on 2/19/2026.</li>
+            <li><strong>January 2026:</strong> <strong>Module 12</strong> (Securing Voice Assistant Systems) is now fully optimized and shared.</li>
+        <li><strong>January 2026:</strong> <strong>Module 11</strong> (Mitigating Backdoor Threats) is now available.</li>
+        
+        <li><strong>January 2026:</strong> <strong>Module 10</strong> (Securing Object Recognition) is now available.</li>
+        <li><strong>January 2026:</strong> <strong>Module 9</strong> (Physical Adversarial Attacks) is now available.</li>
+        
+        <li><strong>November 2025:</strong> <strong>Module 8</strong> (Inserting Backdoors via Poisoned Images) is now available.</li>
+        <li><strong>August 2025:</strong> <strong>Module 7</strong> (Spoofing Voice via Environmental Sounds) is now available for download.</li>
+        <li><strong>June 2025:</strong> <strong>Module 6</strong> (Hiding Backdoor Triggers in Sounds) has been released.</li>
+        <li><strong>March 2025:</strong> <strong>Module 5</strong> (Practical Backdoor Attacks) is now available.</li>
+        <li><strong>February 2025:</strong> <strong>Module 4</strong> (Security Protection of Voice Systems)is now available.</li>
+        
+        <li><strong>February 2025:</strong> <strong>Module 3</strong> (Leveraging Image Patches) is now available.</li>
+        <li><strong>January 2025:</strong> <strong>Module 2</strong> (Attacking Voice Assistants via Speech Perturbations) has been published.</li>
+        <li><strong>January 2025:</strong> <strong>Module 1</strong> (Gradient Descent-Based Attacks) launched as the foundation of platform.</li>
     </section>
 </div>
 
@@ -373,6 +432,21 @@
     
         <script src="/js/ribbonDynamic.js"></script>
     
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 
 </html>
